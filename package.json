@@ -13,5 +13,8 @@
     "gent"
   ],
   "author": "Olivier Van D'huynslager",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0"
+  }
 }
