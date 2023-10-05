@@ -5,7 +5,7 @@ The service checks the museums database and REST-API on a weekly basis and based
 
 This output is written away in a report and send to staff members within the museum for follow-up.   
 
-This way we want to ensure persistent URIs, maintain a healthy upstream, and ensure accesibility to our data. 
+This way we want to ensure Persistent Uniform Resource Locators (PURL) to maintain a healthy upstream, and ensure accesibility to our data.  
 
 ### output:
 
@@ -26,4 +26,6 @@ content in LDES matches with PID
 STATUS: HEALTHY
 ----------
 ```
+
+
 
