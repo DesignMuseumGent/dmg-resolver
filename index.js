@@ -5,6 +5,9 @@ function main() {
     console.log("BOOTING UP HEALTH CHECK - RESOLVER")
     console.log("---------------------")
 
+    // CHECK FOR DUBPLICATES
+    // todo:
+
     // CHECK RECORDS
     monitorHealthUpstream();
 }

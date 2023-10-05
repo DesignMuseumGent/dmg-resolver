@@ -39,6 +39,7 @@ export async function monitorHealthUpstream() {
             statusManifest = checkManifest(_stream[i]["iiif_manifest"], _stream[i]["objectNumber"])
             await sleep(1000);
             writeRESOLVEROUTE(_stream[i]["objectNumber"], PURI)
+            console.log(`RESOLVE TO: ${PURI}`)
             console.log("STATUS: HEALTHY")
         }
 
@@ -48,6 +49,7 @@ export async function monitorHealthUpstream() {
             let _ROUTE = baseURI+"id/object/UNHEALTHY"
             writeSTATUS(_stream[i]["objectNumber"], "UNHEALTHY")
             writeRESOLVEROUTE(_stream[i]["objectNumber"], _ROUTE)
+            console.log(`RESOLVE TO: ${_ROUTE}`)
             console.log("STATUS: UNHEALTHY")
         }
 
