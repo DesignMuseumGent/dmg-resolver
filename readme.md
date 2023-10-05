@@ -8,8 +8,8 @@ Node-based service to maintain a healthy upstream for the [REST-API](https://git
 * a status report is generated so if necessary, our staff is aware of what changes need to be made. 
 
 ## DEPENDENCIES 
-* Linked Data Event Stream
-* Postgres Database
+* [node-service-eventstream-api]([url](https://github.com/StadGent/node_service_eventstream-api)) (service publishing eventstreams from our data)
+* Postgres Database 
 * IIIF persentation API
 
 This way we want to ensure Persistent Uniform Resource Locators (PURL) to maintain a healthy upstream, and ensure accesibility to our data, avoiding HTTP errors. 
