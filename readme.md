@@ -1,13 +1,21 @@
 # RESOLVER  - DESIGN MUSEUM GENT
 Node-based service to maintain a healthy upstream for the [REST-API](https://github.com/oliviervd/dmg-rest-api) of Design Museum Gent.
 
-The service checks the museums database and REST-API on a weekly basis and based on a switch-case assigns it a status of HEALTHY or UNHEALTHY. Based on this check a route is defined to which the API needs to resolve when the PURI is requested via the REST-API. 
+## WHAT IT DOES. 
+* each week (on sunday) our DB is vetted for inconsistencies to ensure a healthy upstream.
+* Inconsistencies include (tracing duplicates, tracing HTTP Client or Server errors, inconsistencies between PID and data (due to changes in metadata f.e.))
+* based on switch cases (above) a route is defined to which the Persistent Uniform Resource Locator needs to (re)direct. 
+* a status report is generated so if necessary, our staff is aware of what changes need to be made. 
 
-This output is written away in a report and send to staff members within the museum for follow-up.   
+## DEPENDENCIES 
+* Linked Data Event Stream
+* Postgres Database
+* IIIF persentation API
 
-This way we want to ensure persistent URIs, maintain a healthy upstream, and ensure accesibility to our data. 
+This way we want to ensure Persistent Uniform Resource Locators (PURL) to maintain a healthy upstream, and ensure accesibility to our data, avoiding HTTP errors. 
 
 ### output:
+
 
 ```
 ----------
@@ -26,4 +34,6 @@ content in LDES matches with PID
 STATUS: HEALTHY
 ----------
 ```
+
+
 
