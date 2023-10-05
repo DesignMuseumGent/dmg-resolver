@@ -1,4 +1,4 @@
-import {connectorObjects, writeIIIFSTATUS, writePURI, writeSTATUS} from "../client/client.js";
+import {connectorObjects, writeIIIFSTATUS, writePURI, writeRESOLVEROUTE, writeSTATUS} from "../client/client.js";
 import * as dotenv from 'dotenv'
 
 // init dotenv
@@ -38,17 +38,18 @@ export async function monitorHealthUpstream() {
             // SWITCH B
             statusManifest = checkManifest(_stream[i]["iiif_manifest"], _stream[i]["objectNumber"])
             await sleep(1000);
+            writeRESOLVEROUTE(_stream[i]["objectNumber"], PURI)
             console.log("STATUS: HEALTHY")
         }
 
         // 3B. if this first check does not pass:
         else {
             // write: STATUS = UNHEALTHY (needs follow-up)
+            let _ROUTE = baseURI+"id/object/UNHEALTHY"
             writeSTATUS(_stream[i]["objectNumber"], "UNHEALTHY")
+            writeRESOLVEROUTE(_stream[i]["objectNumber"], _ROUTE)
             console.log("STATUS: UNHEALTHY")
         }
-
-
 
         // 2. write PURI to DB
         writePURI(_stream[i]["objectNumber"], PURI)
