@@ -1,0 +1,17 @@
+{
+  "name": "dmg-resolver",
+  "version": "1.0.0",
+  "description": "resolver utility for maintining healthy upstream when parsing URIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "resolver",
+    "design",
+    "museum",
+    "gent"
+  ],
+  "author": "Olivier Van D'huynslager",
+  "license": "MIT"
+}
