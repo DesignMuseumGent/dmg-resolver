@@ -1,9 +1,11 @@
 # RESOLVER  - DESIGN MUSEUM GENT
 Node-based service to maintain a healthy upstream for the [REST-API](https://github.com/oliviervd/dmg-rest-api) of Design Museum Gent.
 
-The service checks the museums database and REST-API on a weekly basis and based on a switch-case assigns it a status of HEALTHY or UNHEALTHY. This output is written away in a report and send to staff members within the museum for follow-up.   
+The service checks the museums database and REST-API on a weekly basis and based on a switch-case assigns it a status of HEALTHY or UNHEALTHY. Based on this check a route is defined to which the API needs to resolve when the PURI is requested via the REST-API. 
 
-This way we want to ensure persistent URIs. 
+This output is written away in a report and send to staff members within the museum for follow-up.   
+
+This way we want to ensure persistent URIs, maintain a healthy upstream, and ensure accesibility to our data. 
 
 ### output:
 
