@@ -8,7 +8,7 @@ Node-based service to maintain a healthy upstream for the [REST-API](https://git
 * a status report is generated so if necessary, our staff is aware of what changes need to be made. 
 
 ## DEPENDENCIES 
-* [node-service-eventstream-api]([url](https://github.com/StadGent/node_service_eventstream-api)) (service publishing eventstreams from our data)
+* [node-service-eventstream-api](https://github.com/StadGent/node_service_eventstream-api) (service publishing eventstreams from our data)
 * Postgres Database 
 * IIIF persentation API
 
