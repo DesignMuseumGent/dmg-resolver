@@ -27,6 +27,7 @@ IIIF Manifest Response: 200
 objectnumber in LDES: 0559
 content in LDES matches with PID
 STATUS: HEALTHY
+RESOLVE_TO: https://data.designmuseumgent.be/id/object/0559
 ----------
 1/5864
 checking: https://data.designmuseumgent.be/id/object/2017-0448
@@ -34,6 +35,7 @@ IIIF Manifest Response: 200
 objectnumber in LDES: 2017-0448
 content in LDES matches with PID
 STATUS: HEALTHY
+RESOLVE_TO: https://data.designmuseumgent.be/id/object/2017-0448
 ----------
 ```
 
