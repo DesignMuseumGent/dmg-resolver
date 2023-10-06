@@ -110,6 +110,7 @@ function checkResponse(RES, _ON, PURI) {
             writeRESOLVEROUTE(_ON, PURI)
             writeSTATUS(_ON, "HEALTHY")
             console.log(`RESOLVE_TO: ${PURI}`)
+            console.log("STATUS: HEALTHY")
             break;
 
         case 403:
@@ -118,6 +119,7 @@ function checkResponse(RES, _ON, PURI) {
             writeRESOLVEROUTE(_ON, PURI)
             writeSTATUS(_ON, "HEALTHY")
             console.log(`RESOLVE_TO: ${PURI}`)
+            console.log("STATUS: HEALTHY")
             break;
 
         case 404:
@@ -126,6 +128,7 @@ function checkResponse(RES, _ON, PURI) {
             writeRESOLVEROUTE(_ON, baseURI+"id/object/UNHEALTHY")
             writeSTATUS(_ON, "UNHEALTHY")
             console.log(`RESOLVE_TO: ${baseURI+"id/object/UNHEALTHY"}`)
+            console.log("STATUS: UNHEALTHY")
             break;
 
         case 503:
@@ -134,6 +137,7 @@ function checkResponse(RES, _ON, PURI) {
             writeRESOLVEROUTE(_ON, baseURI+"id/object/UNHEALTHY")
             writeSTATUS(_ON, "UNHEALTHY")
             console.log(`RESOLVE_TO: ${baseURI+"id/object/UNHEALTHY"}`)
+            console.log("STATUS: UNHEALTHY")
             break;
     }
 }
