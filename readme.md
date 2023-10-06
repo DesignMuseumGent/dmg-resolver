@@ -39,6 +39,45 @@ RESOLVE_TO: https://data.designmuseumgent.be/id/object/2017-0448
 ----------
 ```
 
+## SETUP
+this service has dependencies that rely on private credentials. - setting up this service, is only possible in correspondence with the museum. 
+
+### install dependencies 
+make sure node is installed on the device
+
+```
+npm install 
+```
+
+add .env file at root level of the repository
+```
+touch .env
+```
+
+fill in the credentials in .env file: 
+```
+_baseURI="https://data.designmuseumgent.be/
+SUPABASE_URL= *****
+SUPABASE_KEY= *****
+```
+
+### run service
+we run this service on a raspberrypi.
+
+move in the directory 
+```
+cd dmg-resolver
+```
+
+start check
+```
+npm start
+```
+
+
+
+
+
 
 
 
