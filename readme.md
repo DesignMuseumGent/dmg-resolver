@@ -1,5 +1,5 @@
 # RESOLVER  - DESIGN MUSEUM GENT
-Node-based service to maintain a healthy upstream for the [REST-API](https://github.com/oliviervd/dmg-rest-api) of Design Museum Gent.
+Node-based service, part of the museum data infrastructure, to maintain a healthy upstream for the [REST-API](https://github.com/oliviervd/dmg-rest-api) of Design Museum Gent.
 
 ## WHAT IT DOES. 
 * each week (on sunday) the museums' postgres database is vetted for inconsistencies and errors - to ensure a healthy upstream.
