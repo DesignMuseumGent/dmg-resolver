@@ -30,6 +30,6 @@ export async function writeSTATUS(_on, STATUS) {
 export async function writeRESOLVEROUTE(_on, ROUTE) {
     const {data, error} = await supabase
         .from('dmg_objects_LDES')
-        .update({'RESOLVE_TO': ROUTE})
+        .update({'RESOLVES_TO': ROUTE})
         .eq("objectNumber", _on)
 }

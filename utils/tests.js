@@ -30,42 +30,35 @@ export async function monitorHealthUpstream() {
 
         // 1. check LDES - (see if it aligns with PID)
         statusLDES = checkLDES(_stream[i]["objectNumber"], _stream[i]["LDES_raw"])
+        await sleep(1000);
 
         // SWITCH A
         // 2. if this first check passes.
-        if(statusLDES){
+        if (statusLDES == true){
             // 3A. check status manifest (response request)
-            // SWITCH B
-            statusManifest = checkManifest(_stream[i]["iiif_manifest"], _stream[i]["objectNumber"])
+            checkManifest(_stream[i]["iiif_manifest"], _stream[i]["objectNumber"], PURI)
             await sleep(1000);
-            writeRESOLVEROUTE(_stream[i]["objectNumber"], PURI)
-            console.log(`RESOLVE TO: ${PURI}`)
-            console.log("STATUS: HEALTHY")
         }
 
         // 3B. if this first check does not pass:
         else {
             // write: STATUS = UNHEALTHY (needs follow-up)
             let _ROUTE = baseURI+"id/object/UNHEALTHY"
-            writeSTATUS(_stream[i]["objectNumber"], "UNHEALTHY")
-            writeRESOLVEROUTE(_stream[i]["objectNumber"], _ROUTE)
+            await writeSTATUS(_stream[i]["objectNumber"], "UNHEALTHY")
+            await writeRESOLVEROUTE(_stream[i]["objectNumber"], _ROUTE)
             console.log(`RESOLVE TO: ${_ROUTE}`)
             console.log("STATUS: UNHEALTHY")
         }
 
         // 2. write PURI to DB
-        writePURI(_stream[i]["objectNumber"], PURI)
+        await writePURI(_stream[i]["objectNumber"], PURI)
 
         // 3. write route to resolve to to DB
-
         await sleep(3000);
 
     }
 }
 
-function defineStatus(RES_MANIFEST, RES_LDES){
-
-}
 
 function checkLDES(_on, LDES) {
     // function that checks if the content alligns with the PID
@@ -90,14 +83,14 @@ function extractObjectNumberLDES(LDES) {
     return LDES_ON
 }
 
-export async function checkManifest(manifest, _ON){
+export async function checkManifest(manifest, _ON, pURI){
     let _STATUS;
     // fetch data upstream (db)
     fetch(manifest)
         .then((res) => {
             //console.log(res.status)
             console.log(`IIIF Manifest Response: ${res.status}`)
-            _STATUS = checkResponse(res.status, _ON)
+            _STATUS = checkResponse(res.status, _ON, pURI)
 
         })
         .catch((err) => {
@@ -106,34 +99,42 @@ export async function checkManifest(manifest, _ON){
     return _STATUS;
 }
 
-function checkResponse(RES, _ON) {
+function checkResponse(RES, _ON, PURI) {
     // check response and write to DB.
     // column: iiif_manifest_RESPONSE
-    let STAT;
+
     switch(RES) {
-        case RES=200:
+        case 200:
             // OK
             writeIIIFSTATUS(_ON, RES)
+            writeRESOLVEROUTE(_ON, PURI)
             writeSTATUS(_ON, "HEALTHY")
-            STAT = true;
+            console.log(`RESOLVE_TO: ${PURI}`)
+            break;
 
-        case RES=403:
+        case 403:
             // FORBIDDEN (restricted access)
             writeIIIFSTATUS(_ON, RES)
+            writeRESOLVEROUTE(_ON, PURI)
             writeSTATUS(_ON, "HEALTHY")
-            STAT = true;
+            console.log(`RESOLVE_TO: ${PURI}`)
+            break;
 
-        case RES=404:
+        case 404:
             // NOT FOUND
             writeIIIFSTATUS(_ON, RES)
+            writeRESOLVEROUTE(_ON, baseURI+"id/object/UNHEALTHY")
             writeSTATUS(_ON, "UNHEALTHY")
-            STAT = false;
+            console.log(`RESOLVE_TO: ${baseURI+"id/object/UNHEALTHY"}`)
+            break;
 
-        case RES=503:
+        case 503:
             // SERVICE UNAVAILABLE
             writeIIIFSTATUS(_ON, RES)
-            STAT = false;
+            writeRESOLVEROUTE(_ON, baseURI+"id/object/UNHEALTHY")
+            writeSTATUS(_ON, "UNHEALTHY")
+            console.log(`RESOLVE_TO: ${baseURI+"id/object/UNHEALTHY"}`)
+            break;
     }
-    return STAT;
 }
 
