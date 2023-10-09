@@ -3,7 +3,7 @@ Node-based service, part of the museum data infrastructure, to maintain a health
 
 ## WHAT IT DOES. 
 * each week (on sunday) the museums' postgres database is vetted for inconsistencies and errors - to ensure a healthy upstream.
-* inconsistencies include (enity duplicates, HTTP Client and/or Server errors, misalignment between PID and metadata (due to changes in registration (fe. changing objectnumber) f.e.))
+* inconsistencies include (entity duplicates, HTTP Client and/or Server errors, misalignment between PID and metadata (due to changes in registration (fe. changing objectnumber) f.e.))
 * based on the switch cases (mentioned above), each endpoint is given a status (healthy / unhealthy)
 * based on the status, the route to which the Persistent Uniform Resource Locator needs to (re)direct is defined and stored in the DB to be used when resolving. 
 * a status report is generated so if necessary, our staff is aware of what changes need to be made. 
