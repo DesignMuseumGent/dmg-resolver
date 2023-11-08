@@ -3,11 +3,11 @@
   "type": "module",
   "version": "1.0.0",
   "description": "resolver utility for maintining healthy upstream when parsing URIs",
-  "main": "index.js",
+  "main": "resolver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm start",
-    "start": "node index.js"
+    "start": "node resolver.js"
   },
   "keywords": [
     "resolver",
