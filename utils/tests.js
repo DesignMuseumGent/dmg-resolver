@@ -16,7 +16,7 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function monitorHealthUpstream(_onlyUnknown) {
+export async function monitorHealthUpstream(STATUS) {
   // this function checks the health of the published data and defines rerouting if necessary.
 
   let _stream = await connectorObjects();
