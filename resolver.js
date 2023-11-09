@@ -19,10 +19,21 @@ function main() {
   // IF UNKOWN
 
   // CHECK RECORDS
-  monitorHealthUpstream();
+  monitorHealthUpstream("UNKNOWN");
+  console.log("ONLY CHECKING OBJECTS WITH STATUS: UNKNOWN");
+
+  // scan only UNHEALTHY objects (once per week)
+  cron.schedule("0 18 * * 7", () => {
+    // start running at 18pm on sunday
+    monitorHealthUpstream("UNHEALTHY");
+  });
+
+  // full scan (only once per month)
+  cron.schedule("0 0 1 * *", () => {
+    // start running at 00:00 on day 1 of the month.
+    monitorHealthUpstream("ALL");
+  });
 }
 
-cron.schedule("0 18 * * 7", () => {
-  // start running at 18 pm on sunday.
-  main();
-});
+// start script
+main();
