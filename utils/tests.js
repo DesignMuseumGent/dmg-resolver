@@ -27,7 +27,6 @@ export async function monitorHealthUpstream() {
         console.log(`${i}/${_total}`)
         console.log(`checking: ${PURI}`)
 
-
         // 1. check LDES - (see if it aligns with PID)
         statusLDES = checkLDES(_stream[i]["objectNumber"], _stream[i]["LDES_raw"])
         await sleep(1000);

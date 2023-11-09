@@ -2,7 +2,7 @@ import {supabase} from "./supabaseClient.js";
 export async function connectorObjects() {
     const {data, error} = await supabase
         .from('dmg_objects_LDES')
-        .select('objectNumber, RESOLVES_TO, PURI, iiif_manifest, LDES_raw')
+        .select('objectNumber, RESOLVES_TO, PURI, iiif_manifest, LDES_raw, STATUS')
     return data;
 }
 

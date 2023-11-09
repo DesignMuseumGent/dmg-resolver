@@ -1,30 +1,28 @@
-import {monitorHealthUpstream} from "./utils/tests.js";
+import { monitorHealthUpstream } from "./utils/tests.js";
 import cron from "node-cron";
 
 function main() {
+  console.log("---------------------");
+  console.log("BOOTING UP HEALTH CHECK - RESOLVER");
+  console.log("---------------------");
 
+  // CHECK FOR DUPLICATES
+  // todo: https://www.phind.com/search?cache=yxa4xegiuml3tvo0ljz3sngl
 
-            console.log("---------------------")
-            console.log("BOOTING UP HEALTH CHECK - RESOLVER")
-            console.log("---------------------")
+  // 1. -- CHECK STATUS
+  // IF UNKWOWN --> run fully
 
-            // CHECK FOR DUPLICATES
-            // todo: https://www.phind.com/search?cache=yxa4xegiuml3tvo0ljz3sngl
+  // IF HEALTHY --> check PURL in column RESOLVE_TO
 
-            // 1. -- CHECK STATUS
-            // IF UNKWOWN --> run fully
+  // IF UNHEALTHY (after check) --> check PURL in column RESOLVE_TO
 
-            // IF HEALTHY --> check PURL in column RESOLVE_TO
+  // IF UNKOWN
 
-            // IF UNHEALTHY (after check) --> check PURL in column RESOLVE_TO
-
-            // IF UNKOWN
-
-            // CHECK RECORDS
-            monitorHealthUpstream();
+  // CHECK RECORDS
+  monitorHealthUpstream();
 }
 
-cron.schedule("15 15 * * *", () => {
-    main();
+cron.schedule("0 18 * * 7", () => {
+  // start running at 18 pm on sunday.
+  main();
 });
-
