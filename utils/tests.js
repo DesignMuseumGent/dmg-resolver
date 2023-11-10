@@ -38,6 +38,14 @@ export async function monitorHealthUpstream(STATUS) {
       case "UNEALTHY":
         // only if unhealthy check this object
         if (_stream[i]["STATUS"] === "UNHEALTHY") {
+          // add staging where it first checks if check has happened.
+          // if yes, then check if the resolve_to is functioning.
+          // if yes assign STATUS healthy
+          // // add staging where it first checks if check has happened.
+          // if yes, then check if the resolve_to is functioning.
+          // if yes assign STATUS healthy
+          // if not assign STATUS unhealthy.
+          // if not assign STATUS unhealthy
           check = true;
         }
         break;

@@ -12,7 +12,7 @@ function main() {
   // CHECK RECORDS
 
   // scan only UNKNOWN objects (daily)
-  cron.schedule("", () => {
+  cron.schedule("0 10 * * *", () => {
     monitorHealthUpstream("UNKNOWN");
     console.log("ONLY CHECKING OBJECTS WITH STATUS: UNKNOWN");
   });
