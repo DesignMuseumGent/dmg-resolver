@@ -46,7 +46,11 @@ export async function monitorHealthUpstream(STATUS) {
           // if yes assign STATUS healthy
           // if not assign STATUS unhealthy.
           // if not assign STATUS unhealthy
-          check = true;
+          if (_stream[i]["check"] === true) {
+            check = false;
+          } else {
+            check = true;
+          }
         }
         break;
       case "ALL":
