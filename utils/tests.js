@@ -48,6 +48,7 @@ export async function monitorHealthUpstream(STATUS) {
           // if not assign STATUS unhealthy
           if (_stream[i]["check"] === true) {
             check = false;
+            await writeSTATUS(_stream[i]["objectNumber"], "HEALTHY");
           } else {
             check = true;
           }
