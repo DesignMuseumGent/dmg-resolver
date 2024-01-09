@@ -55,8 +55,14 @@ export async function monitorHealthUpstream(STATUS) {
         }
         break;
       case "ALL":
-        check = true;
-        break;
+        console.log(_stream[i]["check"])
+        if (_stream[i]["check"]){
+          check = false;
+          break;
+        }  else {
+          check = true;
+          break;
+        }
     }
 
     if (check) {
@@ -65,6 +71,8 @@ export async function monitorHealthUpstream(STATUS) {
       console.log("----------");
       console.log(`${i}/${_total}`);
       console.log(`checking: ${PURI}`);
+
+      // FIRST CHECK IF CHECK iS NOT TRUE (if true move forward)
 
       // 1. check LDES - (see if it aligns with PID)
       statusLDES = checkLDES(
