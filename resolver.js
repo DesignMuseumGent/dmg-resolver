@@ -11,26 +11,25 @@ function main() {
 
   // CHECK RECORDS
 
-  // scan only UNKNOWN objects (daily)
-  cron.schedule("30 10 * * *", () => {
+  // scan only UNKNOWN objects (daily at 00:00)
+  cron.schedule("0 00 * * *", () => {
     monitorHealthUpstream("UNKNOWN");
     console.log("ONLY CHECKING OBJECTS WITH STATUS: UNKNOWN");
   });
 
-  // scan only UNHEALTHY objects (once per week)
-  cron.schedule("0 18 * * 7", () => {
-    // start running at 18pm on sunday
+  // scan only UNHEALTHY objects (daily at 01:00)
+  cron.schedule("1 00 * * 7", () => {
     monitorHealthUpstream("UNHEALTHY");
     console.log("ONLY CHECKING OBJECTS WITH STATUS: UNHEALTHY");
   });
 
-  // full scan (only once per month)
-  cron.schedule("0 0 1 * *", () => {
-    // start running at 00:00 on day 1 of the month.
+  // full scan (only once per week - 02:00 on friday)
+  cron.schedule("0 2 * * 5", () => {
     monitorHealthUpstream("ALL");
     console.log("SCANNING ALL OBJECTS - FULL CHECK");
   });
 }
 
 // start script
+//monitorHealthUpstream("ALL");
 main();
