@@ -35,7 +35,7 @@ export async function monitorHealthUpstream(STATUS) {
           check = true;
         }
         break;
-      case "UNEALTHY":
+      case "UNHEALTHY":
         // only if unhealthy check this object
         if (_stream[i]["STATUS"] === "UNHEALTHY") {
           // add staging where it first checks if check has happened.
@@ -55,11 +55,13 @@ export async function monitorHealthUpstream(STATUS) {
         }
         break;
       case "ALL":
-        console.log(_stream[i]["check"])
-        if (_stream[i]["check"]){
+        if (_stream[i]["check"] === true){
+          // the record has been checked.
+          console.log(_stream[i]["check"])
           check = false;
           break;
         }  else {
+          console.log(_stream[i]["check"])
           check = true;
           break;
         }
