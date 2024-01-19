@@ -24,7 +24,7 @@ function main() {
   });
 
   // full scan (only once per week - 02:00 on friday)
-  cron.schedule("0 2 * * 5", () => {
+  cron.schedule("0 0 * * 6", () => {
     monitorHealthUpstream("ALL");
     console.log("SCANNING ALL OBJECTS - FULL CHECK");
   });
