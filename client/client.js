@@ -3,7 +3,7 @@ export async function connectorObjects() {
   const { data, error } = await supabase
     .from("dmg_objects_LDES")
     .select(
-      "objectNumber, RESOLVES_TO, PURI, iiif_manifest, LDES_raw, STATUS, check",
+      "*",
     );
   return data;
 }
@@ -34,5 +34,12 @@ export async function writeRESOLVEROUTE(_on, ROUTE) {
     .from("dmg_objects_LDES")
     .update({ RESOLVES_TO: ROUTE })
     .eq("objectNumber", _on);
+}
+
+export async function writeURI(_on, PID) {
+  const { data, error } = await supabase
+      .from("dmg_objects_LDES")
+      .update({PID: PID})
+      .eq("objectNumber", _on)
 }
 
