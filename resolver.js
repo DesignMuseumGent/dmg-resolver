@@ -1,5 +1,6 @@
 import { monitorHealthUpstream } from "./utils/tests.js";
 import cron from "node-cron";
+import {populateIIIF, produceURIs} from "./utils/produceURIs.js";
 
 function main() {
   console.log("---------------------");
@@ -31,5 +32,9 @@ function main() {
 }
 
 // start script
-//monitorHealthUpstream("ALL");
-main();
+
+//populateIIIF()
+monitorHealthUpstream("ALL");
+
+//produceURIs();
+//main();
