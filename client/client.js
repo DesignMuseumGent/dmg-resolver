@@ -43,3 +43,10 @@ export async function writeURI(_on, PID) {
       .eq("objectNumber", _on)
 }
 
+export async function writeManifest(_on, MANIFEST){
+  const {data, error} = await supabase
+      .from('dmg_objects_LDES')
+      .update({iiif_manifest: MANIFEST})
+      .eq("objectNumber", _on);
+}
+

@@ -6,6 +6,7 @@ import {
   writeSTATUS,
 } from "../client/client.js";
 import * as dotenv from "dotenv";
+import ProgressBar from 'progress';
 
 // init dotenv
 dotenv.config();
@@ -23,30 +24,35 @@ export async function monitorHealthUpstream(status) {
   let stream = await connectorObjects();
   let total = stream.length;
 
+  let bar = new ProgressBar(':bar :percent', { total })
+
   for (let i = 0; i < stream.length; i++) {
     const item = stream[i]
-    const {objectNumber, iiif_manifest, LDES_raw, check, STATUS} = item
+    const {objectNumber, iiif_manifest, LDES_raw, STATUS} = item
     const PURI = `id/object/${objectNumber}`;
 
     let shouldCheck = (
         (status === "UNKNOWN" && STATUS === "UNKNOWN") ||
-        (status === "UNHEALTHY" && STATUS === "UNHEALTHY" && !check) ||
-        (status === "ALL" && !check)
+        (status === "UNHEALTHY" && STATUS === "UNHEALTHY") ||
+        (status === "ALL")
     )
 
     if (!shouldCheck) continue;
 
-    console.log(`checking: ${PURI}`)
-
+    console.log(`[${i}/${stream.length}] — ${PURI}`)
 
     if (checkLDES(objectNumber, LDES_raw)) {
       await checkManifest(iiif_manifest, objectNumber, PURI)
     } else {
-      await writeToDB(objectNumber, UNHEALTHY, "id/object/UNHEALTHY")
+      await writeToDB(objectNumber, UNHEALTHY, "id/object/UNHEALTHY") // todo: replace with handle response
     }
 
     await writePURI(objectNumber, PURI);
     await sleep(3000);
+
+    //bar.tick();
+    console.log();
+
   }
 }
 
@@ -62,7 +68,6 @@ async function checkManifest(manifest, objectNumber, PURI) {
     const response = await fetch(manifest)
     console.log(`IIIF Manifest response: ${response.status}`)
     handleResponse(response.status, objectNumber, PURI);
-
   } catch (e) {
     console.log(e)
   }
@@ -76,8 +81,14 @@ async function handleResponse(responseStatus, objectNumber, PURI) {
 
 async function writeToDB(objectNumber, response, route, status) {
   await writeIIIFSTATUS(objectNumber, response);
-  await writeRESOLVEROUTE(objectNumber, route);
-  await writeSTATUS(objectNumber, status);
+  if(objectNumber.includes("_ROOD")) {
+    await writeRESOLVEROUTE(objectNumber, "id/object/REMOVED");
+    await writeSTATUS(objectNumber, "HEALTHY");
+  } else {
+    await writeRESOLVEROUTE(objectNumber, route);
+    await writeSTATUS(objectNumber, status);
+  }
   console.log(`RESOLVE_TO: ${route}`);
   console.log(`STATUS: ${status}`);
 }
+
