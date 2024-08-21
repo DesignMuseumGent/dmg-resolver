@@ -74,8 +74,8 @@ async function checkManifest(manifest, objectNumber, PURI) {
 }
 
 async function handleResponse(responseStatus, objectNumber, PURI) {
-  const resolverRoute = (responseStatus == 200 || responseStatus === 403) ? PURI : "id/object/UNHEALTHY"
-  const status = (responseStatus === 200 || responseStatus === 403) ? HEALTHY : UNHEALTHY;
+  const resolverRoute = (responseStatus == 200 || responseStatus === 403 || responseStatus === 500) ? PURI : "id/object/UNHEALTHY"
+  const status = (responseStatus === 200 || responseStatus === 403 || responseStatus === 500) ? HEALTHY : UNHEALTHY;
   await writeToDB(objectNumber, responseStatus, resolverRoute, status)
 }
 
