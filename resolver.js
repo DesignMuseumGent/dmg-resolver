@@ -35,7 +35,7 @@ function main() {
 // test
 
 //populateIIIF()
-monitorHealthUpstream("ALL");
+//monitorHealthUpstream("ALL");
 
 //produceURIs();
-//main();
+main();
