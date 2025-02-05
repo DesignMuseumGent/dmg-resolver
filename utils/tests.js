@@ -1,6 +1,6 @@
 import {
   connectorObjects,
-  writeIIIFSTATUS,
+  writeIIIFSTATUS, writeManifest,
   writePURI,
   writeRESOLVEROUTE,
   writeSTATUS,
@@ -44,7 +44,7 @@ export async function monitorHealthUpstream(status, objectNumberToCheck = null) 
 
     console.log(`[${i}/${stream.length}] — ${PURI}`)
 
-    if (PURI !== RESOLVES_TO && RESOLVES_TO !== "id/object/UNHEALTHY") {
+    if (PURI !== RESOLVES_TO && RESOLVES_TO !== "id/object/UNHEALTHY" && RESOLVES_TO != null) {
       console.log(`[${i}/${stream.length}] ${PURI} already resolves to ${RESOLVES_TO}`)
       console.log("")
       await writeSTATUS(objectNumber, "HEALTHY");
@@ -75,7 +75,16 @@ function checkLDES(objectNumber, LDES) {
 
 async function checkManifest(manifest, objectNumber, PURI) {
   try {
-    const response = await fetch(manifest)
+    let response;
+    try {
+      // there's already a manifest
+      response = await fetch(manifest)
+    } catch (e) {
+      // manifest is null; generate based on object-number and use this to perform check
+      // writeManifest
+      await writeManifest(objectNumber, `https://api.collectie.gent/iiif/presentation/v2/manifest/dmg:${objectNumber}`)
+      response = await fetch(`https://api.collectie.gent/iiif/presentation/v2/manifest/dmg:${objectNumber}`)
+    }
     console.log(`IIIF Manifest response: ${response.status}`)
     handleResponse(response.status, objectNumber, PURI);
   } catch (e) {

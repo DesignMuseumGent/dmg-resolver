@@ -8,6 +8,23 @@ export async function connectorObjects() {
   return data;
 }
 
+export async function connectorPrivateStream(){
+  console.log(supabase)
+  const { data, error } = await supabase
+    .from("dmg_private_objects_LDES")
+    .select(
+      "objectNumber"
+    );
+  return data;
+}
+
+export async function writeStatusPrivate(_on, STATUS) {
+  const { data, error } = await supabase
+      .from("dmg_private_objects_LDES")
+      .update({duplicate: STATUS})
+      .eq("objectNumber", _on);
+}
+
 export async function writeIIIFSTATUS(_on, RES) {
   const { data, error } = await supabase
     .from("dmg_objects_LDES")
