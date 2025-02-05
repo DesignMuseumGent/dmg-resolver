@@ -1,11 +1,16 @@
 import { monitorHealthUpstream } from "./utils/tests.js";
 import cron from "node-cron";
 import {populateIIIF, produceURIs} from "./utils/produceURIs.js";
+import {prunePrivate} from "./utils/prunePrivate.js";
 
 function main() {
   console.log("---------------------");
   console.log("BOOTING UP HEALTH CHECK - RESOLVER");
   console.log("---------------------");
+
+  // populate database if necessary
+  populateIIIF()
+  produceURIs();
 
   // CHECK FOR DUPLICATES
   // todo: https://www.phind.com/search?cache=yxa4xegiuml3tvo0ljz3sngl
@@ -15,6 +20,8 @@ function main() {
   // scan only UNKNOWN objects (daily at 00:00)
   cron.schedule("0 00 * * *", () => {
     monitorHealthUpstream("UNKNOWN");
+    // prune objects that have been published from the other list.
+    prunePrivate()
     console.log("ONLY CHECKING OBJECTS WITH STATUS: UNKNOWN");
   });
 
@@ -31,11 +38,7 @@ function main() {
   });
 }
 
-// start script
-// test
-
-//populateIIIF()
-//monitorHealthUpstream("ALL");
-
-//produceURIs();
+// run main
 main();
+
+
