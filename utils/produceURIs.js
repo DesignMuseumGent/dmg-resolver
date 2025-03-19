@@ -2,48 +2,55 @@ import {connectorObjects, writeManifest, writeURI} from "../client/client.js";
 
 export async function produceURIs(){
     let stream = await connectorObjects()
-    console.log(stream.length)
 
-    for (let i=0; i < stream.length; i++) {
-        if (stream[i]["PID"] === null) {
-            // fetch object number
-            const reference = stream[i]["objectNumber"]
+    if (stream) {
+        console.log(stream.length)
 
-            // construct URI
-            const URI = `/id/object/${reference}`
-            console.log(`${i}/${stream.length} - /id/object/${reference}`)
-            //console.log(URI)
+        for (let i=0; i < stream.length; i++) {
+            if (stream[i]["PID"] === null) {
+                // fetch object number
+                const reference = stream[i]["objectNumber"]
 
-            // publish URI
-            await writeURI(reference, URI);
-            console.log(`written URI: ${URI}`)
+                // construct URI
+                const URI = `/id/object/${reference}`
+                console.log(`${i}/${stream.length} - /id/object/${reference}`)
+                //console.log(URI)
+
+                // publish URI
+                await writeURI(reference, URI);
+                console.log(`written URI: ${URI}`)
+            }
         }
     }
-
  }
 
  export async function populateIIIF() {
-     let stream = await connectorObjects()
-     console.log(stream.length)
+    console.log("populating IIIF manifests")
 
-     for (let i=0; i < stream.length; i++) {
-         if (stream[i]["iiif_manifest"] === null) {
-             // fetch object number
-             const reference = stream[i]["objectNumber"]
+    let stream = await connectorObjects()
 
-             try {
-                 // construct URI
-                 const MANIFEST = stream[i]["LDES_raw"]["object"]["http://www.cidoc-crm.org/cidoc-crm/P129i_is_subject_of"]["@id"]
+     if (stream) {
+         for (let i=0; i < stream.length; i++) {
+             if (stream[i]["iiif_manifest"] === null) {
+                 // fetch object number
+                 const reference = stream[i]["objectNumber"]
 
-                 // ["object"]["http://www.cidoc-crm.org/cidoc-crm/P129i_is_subject_of"]["@id"]
-                 console.log(`${i}/${stream.length} - ${MANIFEST}`)
+                 try {
+                     // construct URI
+                     const MANIFEST = stream[i]["LDES_raw"]["object"]["http://www.cidoc-crm.org/cidoc-crm/P129i_is_subject_of"]["@id"]
 
-                 // publish URI
-                 await writeManifest(reference, MANIFEST);
-             } catch (e) {
-                 console.log(e)
+                     // ["object"]["http://www.cidoc-crm.org/cidoc-crm/P129i_is_subject_of"]["@id"]
+                     console.log(`${i}/${stream.length} - ${MANIFEST}`)
+
+                     // publish URI
+                     await writeManifest(reference, MANIFEST);
+                 } catch (e) {
+                     console.log(e)
+                 }
+                 //console.log(`written URI: ${URI}`)
              }
-             //console.log(`written URI: ${URI}`)
          }
      }
+
+
  }

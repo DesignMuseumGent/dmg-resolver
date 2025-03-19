@@ -22,47 +22,49 @@ export async function monitorHealthUpstream(status, objectNumberToCheck = null) 
   // this function checks the health of the published data and defines rerouting if necessary.
 
   let stream = await connectorObjects();
-  let total = stream.length;
+  //console.log(stream)
+  if (stream) {
+    let total = stream.length;
 
-  let bar = new ProgressBar(':bar :percent', { total })
+    let bar = new ProgressBar(':bar :percent', { total })
 
-  for (let i = 0; i < stream.length; i++) {
-    const item = stream[i]
-    const {objectNumber, iiif_manifest, LDES_raw, STATUS, RESOLVES_TO} = item
-    const PURI = `id/object/${objectNumber}`;
+    for (let i = 0; i < stream.length; i++) {
+      const item = stream[i]
+      const {objectNumber, iiif_manifest, LDES_raw, STATUS, RESOLVES_TO} = item
+      const PURI = `id/object/${objectNumber}`;
 
-    // If an objectNumberToCheck is provided, skip all other items
-    if (objectNumberToCheck !== null && objectNumberToCheck != objectNumber) continue;
+      // If an objectNumberToCheck is provided, skip all other items
+      if (objectNumberToCheck !== null && objectNumberToCheck != objectNumber) continue;
 
-    let shouldCheck = (
-        (status === "UNKNOWN" && STATUS === "UNKNOWN") ||
-        (status === "UNHEALTHY" && STATUS === "UNHEALTHY") ||
-        (status === "ALL")
-    )
+      let shouldCheck = (
+          (status === "UNKNOWN" && STATUS === "UNKNOWN") ||
+          (status === "UNHEALTHY" && STATUS === "UNHEALTHY") ||
+          (status === "ALL")
+      )
 
-    if (!shouldCheck) continue
+      if (!shouldCheck) continue
 
-    console.log(`[${i}/${stream.length}] — ${PURI}`)
+      console.log(`[${i}/${stream.length}] — ${PURI}`)
 
-    if (PURI !== RESOLVES_TO && RESOLVES_TO !== "id/object/UNHEALTHY" && RESOLVES_TO != null) {
-      console.log(`[${i}/${stream.length}] ${PURI} already resolves to ${RESOLVES_TO}`)
-      console.log("")
-      await writeSTATUS(objectNumber, "HEALTHY");
-      continue
-    }
+      if (PURI !== RESOLVES_TO && RESOLVES_TO !== "id/object/UNHEALTHY" && RESOLVES_TO != null) {
+        console.log(`[${i}/${stream.length}] ${PURI} already resolves to ${RESOLVES_TO}`)
+        console.log("")
+        await writeSTATUS(objectNumber, "HEALTHY");
+        continue
+      }
 
-    if (checkLDES(objectNumber, LDES_raw)) {
-      await checkManifest(iiif_manifest, objectNumber, PURI)
-    } else {
-      await writeToDB(objectNumber, UNHEALTHY, "id/object/UNHEALTHY") // todo: replace with handle response
-    }
+      if (checkLDES(objectNumber, LDES_raw)) {
+        await checkManifest(iiif_manifest, objectNumber, PURI)
+      } else {
+        await writeToDB(objectNumber, UNHEALTHY, "id/object/UNHEALTHY") // todo: replace with handle response
+      }
 
-    await writePURI(objectNumber, PURI);
-    await sleep(3000);
+      await writePURI(objectNumber, PURI);
+      await sleep(3000);
 
-    //bar.tick();
-    console.log();
-
+      //bar.tick();
+      //console.log();
+  }
   }
 }
 

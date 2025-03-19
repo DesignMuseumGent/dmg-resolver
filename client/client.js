@@ -9,12 +9,13 @@ export async function connectorObjects() {
 }
 
 export async function connectorPrivateStream(){
-  console.log(supabase)
+  //console.log(supabase)
   const { data, error } = await supabase
     .from("dmg_private_objects_LDES")
     .select(
       "objectNumber"
-    );
+    )
+      .eq("duplicate", "FALSE");
   return data;
 }
 
